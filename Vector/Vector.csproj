@@ -92,7 +92,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\SDVX_VIVID_WAVE.png" />
     <Content Include="Resources\smug_anime_boi.ico" />
     <None Include="Resources\2018-10-16_11-15-16.png" />
     <None Include="Resources\SDVX_VIVID_WAVE.png" />
