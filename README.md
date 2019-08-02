@@ -29,4 +29,4 @@ private Dictionary<string, string> games = new Dictionary<string, string> {
 - [ ] Clean up comments when I get arcade machine
 
 
-If there are any questions or bugs or feature requests please open an issue on gitlab! :dog:
+If there are any questions, bugs, or feature requests please open an issue on gitlab! :dog:
