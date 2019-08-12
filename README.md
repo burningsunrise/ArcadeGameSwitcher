@@ -32,9 +32,9 @@ Console.WriteLine($"{e.KeyCode} {(e.IsUp ? "up" : "down")}");
 
 - [x] Able to close and open any game, not just the previous open game
 - [x] Close game with GUI cleanly
-- [ ] Need a arcade controller to find keyCode for IsUp and isDown
+- [ ] Need a arcade controller to find KeyCode
 - [ ] Transition more pretty (Maybe a blur transition)
 - [ ] Have a shadow for the countdown instead of a block of black
 - [ ] Clean up comments when I get arcade machine
 
-If there are any questions, bugs, or feature requests please open an issue on gitlab! :dog:
+If there are any questions, bugs, or feature requests please open an issue on gitlab/github! :dog:
