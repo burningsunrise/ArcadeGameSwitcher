@@ -6,10 +6,6 @@ namespace Vector
 {
     public partial class Form1 : Form
     {
-        private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem menuItem1;
-        private CycleThroughGames gameCycle;
-
         public Form1()
         {
             InitializeComponent();
@@ -17,24 +13,26 @@ namespace Vector
             BackColor = Color.Lime;
             TransparencyKey = Color.Lime;
             FormBorderStyle = FormBorderStyle.None;
-            this.notifyIcon1.MouseDoubleClick += this.notifyIcon1_MouseDoubleClick;
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.contextMenu1.MenuItems.AddRange(
-                new System.Windows.Forms.MenuItem[] { this.menuItem1 });
+            this.notifyIcon1.MouseDoubleClick += this.NotifyIcon1_MouseDoubleClick;
+            this.ContextMenu1 = new ContextMenu();
+            this.MenuItem1 = new MenuItem();
+            this.ContextMenu1.MenuItems.AddRange(new MenuItem[] { this.MenuItem1 });
 
-            this.menuItem1.Index = 0;
-            this.menuItem1.Text = "E&xit";
-            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            this.MenuItem1.Index = 0;
+            this.MenuItem1.Text = "E&xit";
+            this.MenuItem1.Click += new EventHandler(this.MenuItem1_Click);
 
-            notifyIcon1.ContextMenu = this.contextMenu1;
+            notifyIcon1.ContextMenu = this.ContextMenu1;
         }
 
         public int TimeLeft { get; set; }
+        public ContextMenu ContextMenu1 { get; }
+        public MenuItem MenuItem1 { get; }
+        internal CycleThroughGames GameCycle { get; set; }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.gameCycle = new CycleThroughGames(this);
+            this.GameCycle = new CycleThroughGames(this);
         }
 
 
@@ -50,7 +48,7 @@ namespace Vector
             }
         }
 
-        private void notifyIcon1_MouseDoubleClick(object Sender, EventArgs e)
+        private void NotifyIcon1_MouseDoubleClick(object Sender, EventArgs e)
         {
             // Set the WindowState to normal if the form is minimized.
             if (this.WindowState == FormWindowState.Minimized)
@@ -70,7 +68,7 @@ namespace Vector
             this.Activate();
         }
 
-        private void menuItem1_Click(object sender, EventArgs e)
+        private void MenuItem1_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -94,7 +92,7 @@ namespace Vector
                 timer1.Stop();
                 timeLabel.Text = "0";
                 timeLabel.Visible = false;
-                gameCycle.ChangeGame();
+                GameCycle.ChangeGame();
             }
         }
     }
