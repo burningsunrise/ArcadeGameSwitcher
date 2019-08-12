@@ -28,7 +28,6 @@ If you would like to find the Keycode of a button, uncomment the below line in C
 Console.WriteLine($"{e.KeyCode} {(e.IsUp ? "up" : "down")}");
 ```
 
-
 ## TODO
 
 - [x] Able to close and open any game, not just the previous open game
