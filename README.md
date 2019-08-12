@@ -4,7 +4,7 @@ A .NET Framework application built for Windows devices, the purpose of this prog
 
 ## Basic Usage
 
-There is some setup to do before you use this program, .Net Framework 4.5 is required. 
+There is some setup to do before you use this program, .Net Framework 4.5 is required.
 
 1. Add your games to CycleThroughGames.cs like below
 2. Add Images to resources folder
