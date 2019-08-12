@@ -10,46 +10,21 @@ namespace Vector
 {
     class CycleThroughGames : Form
     {
-        bool isDown;
         private int gameNumber = 0;
-        private Form1 theForm;
-        private List<Process[]> listOfProcesses = new List<Process[]>();
-        private PictureBox currentPicture = new PictureBox();
-        private List<Image> gamePictures = new List<Image> { Properties.Resources.SDVX_VIVID_WAVE, Properties.Resources.POPN_MUSIC };
-        private Dictionary<string, string> games = new Dictionary<string, string> {
+        private readonly List<Image> gamePictures = new List<Image> { Properties.Resources.SDVX_VIVID_WAVE, Properties.Resources.POPN_MUSIC };
+        private readonly Dictionary<string, string> games = new Dictionary<string, string> {
             { "usc-game", @"C:\Users\burningsunrise\Desktop\USDVXC\usc-game.exe" },
             { "notepad", @"C:\Windows\System32\Notepad.exe" }
         };
         
         public CycleThroughGames(Form1 theForm)
         {
-
-            this.theForm = theForm;
+            this.TheForm = theForm;
             Program.GlobalKeyboardHook.KeyDownOrUp += GlobalKeyboardHook_KeyDownOrUp;
             Disposed += MainView_Disposed;
             AddPicture();
-            // Time to register that we're loading a game
             StartGame();
-        }
-
-        private void MainView_Disposed(object sender, EventArgs e)
-        {
-            Program.GlobalKeyboardHook.KeyDownOrUp -= GlobalKeyboardHook_KeyDownOrUp;
-        }
-
-        private void GlobalKeyboardHook_KeyDownOrUp(object sender, GlobalKeyboardHookEventArgs e)
-        {
-            // If we need to find key
-            //Console.WriteLine($"{e.KeyCode} {(e.IsUp ? "up" : "down")}");
-            if (e.KeyCode.ToString() == "Pause" && !e.IsUp && !isDown)
-            {
-                isDown = true;
-                RemovePicture();
-            }
-            else if (e.KeyCode.ToString() == "Pause" && e.IsUp)
-            {
-                isDown = false;
-            }
+            MinimizeForm();
         }
 
         public int GameNumber
@@ -70,24 +45,48 @@ namespace Vector
                 }
             }
         }
+        public bool IsDown { get; set; }
+        public Form1 TheForm { get; set; }
+        public List<Process[]> ListOfProcesses { get; set; } = new List<Process[]>();
+        public PictureBox CurrentPicture { get; set; } = new PictureBox();
+
+        private void MainView_Disposed(object sender, EventArgs e)
+        {
+            Program.GlobalKeyboardHook.KeyDownOrUp -= GlobalKeyboardHook_KeyDownOrUp;
+        }
+
+        private void GlobalKeyboardHook_KeyDownOrUp(object sender, GlobalKeyboardHookEventArgs e)
+        {
+            // If we need to find key
+            //Console.WriteLine($"{e.KeyCode} {(e.IsUp ? "up" : "down")}");
+            if (e.KeyCode.ToString() == "Pause" && !e.IsUp && !IsDown)
+            {
+                IsDown = true;
+                RemovePicture();
+            }
+            else if (e.KeyCode.ToString() == "Pause" && e.IsUp)
+            {
+                IsDown = false;
+            }
+        }
 
         private void MinimizeForm()
         {
-            if (theForm.WindowState == FormWindowState.Normal)
+            if (TheForm.WindowState == FormWindowState.Normal)
             {
-                theForm.Hide();
-                theForm.WindowState = FormWindowState.Minimized;
+                TheForm.Hide();
+                TheForm.WindowState = FormWindowState.Minimized;
             }
         }
 
         private void MaximizeForm()
         {
-            if (theForm.WindowState == FormWindowState.Minimized)
+            if (TheForm.WindowState == FormWindowState.Minimized)
             {
-                theForm.Show();
-                theForm.Activate();
-                theForm.WindowState = FormWindowState.Normal;
-                theForm.ShowInTaskbar = true;
+                TheForm.Show();
+                TheForm.Activate();
+                TheForm.WindowState = FormWindowState.Normal;
+                TheForm.ShowInTaskbar = true;
             }
         }
 
@@ -99,28 +98,28 @@ namespace Vector
 
         private void AddPicture()
         {
-            currentPicture.Image = gamePictures[GameNumber];
-            currentPicture.SizeMode = PictureBoxSizeMode.Zoom;
-            currentPicture.Dock = DockStyle.Fill;
-            theForm.Controls.Add(currentPicture);
+            CurrentPicture.Image = gamePictures[GameNumber];
+            CurrentPicture.SizeMode = PictureBoxSizeMode.Zoom;
+            CurrentPicture.Dock = DockStyle.Fill;
+            TheForm.Controls.Add(CurrentPicture);
             // Always bring to the foreground on open and on key activation
-            theForm.WindowState = FormWindowState.Minimized;
+            TheForm.WindowState = FormWindowState.Minimized;
             MaximizeForm();
-            theForm.ShowInTaskbar = true;
+            TheForm.ShowInTaskbar = true;
         }
 
         private void RemovePicture()
         {
             MaximizeForm();
-            currentPicture.Refresh();
-            if (theForm.timer1.Enabled)
+            CurrentPicture.Refresh();
+            if (TheForm.timer1.Enabled)
             {
-                theForm.timer1.Stop();
+                TheForm.timer1.Stop();
             }
             ++GameNumber;
             AddPicture();
-            theForm.TimeLeft = 5;
-            theForm.timer1.Start();
+            TheForm.TimeLeft = 5;
+            TheForm.timer1.Start();
         }
 
         public void ChangeGame()
@@ -129,9 +128,9 @@ namespace Vector
             {
                 foreach (var name in games.Keys)
                 {
-                    listOfProcesses.Add(Process.GetProcessesByName(name));
+                    ListOfProcesses.Add(Process.GetProcessesByName(name));
                 }
-                foreach (var processes in listOfProcesses)
+                foreach (var processes in ListOfProcesses)
                 {
                     foreach (var proc in processes)
                     {
@@ -139,9 +138,9 @@ namespace Vector
                         proc.WaitForExit();
                     }
                 }
-                Process.Start(games.Values.ElementAt(GameNumber));
+                StartGame();
                 MinimizeForm();
-                listOfProcesses.Clear();
+                ListOfProcesses.Clear();
             }
             catch (Exception ex)
             {
